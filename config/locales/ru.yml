@@ -1,0 +1,9 @@
+ru:
+  activerecord:
+    models:
+      news_item: Новость
+    attributes:
+      news_item:
+        title: Заголовок
+        description: Аннотация
+        expire_at: Актуально до

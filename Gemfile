@@ -29,3 +29,5 @@ end
 
 gem 'slim-rails'
 gem 'pg'
+gem 'formtastic', '~> 3.0'
+gem 'rails-i18n'

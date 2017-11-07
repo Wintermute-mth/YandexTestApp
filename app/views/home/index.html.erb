@@ -1,21 +1,24 @@
-<style>
-  .ya-news__title{font-size:100%;font-weight:700;margin-bottom:.5em}
-  .ya-news__date{font-size:85%;margin-right:.5em}
-  .ya-news__informer{font-size:85%;margin-bottom:.3em}
-  .ya-news__description{font-size:85%;margin-bottom:.5em}
-  .ya-news__all{font-size:80%;margin-top:.3em}
-</style>
-<script src="//news.yandex.ru/ru/index5.utf8.js" charset="utf-8"></script>
-<script>
-  (function(w,rubric){
-    var data=w[rubric];
-    if(!data||!data.length){return;}
-    function formatDate(ts){
-      var d=new Date(ts*1000);
-      return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);
-    }
-    var item = data[0];
-    var html = '<div><span class="ya-news__date">'+item.date+'&nbsp;'+item.time+'</span><span class="ya-news__title"><a href="'+item.url+'" target="_blank">'+item.title+'</a></span></div><div class="ya-news__description">'+item.descr+'</div>';
-    document.write(html);
-  }(window, 'm_index'));
-</script>
+<% if @item %>
+<% else %>
+  <style>
+    .ya-news__title{font-size:100%;font-weight:700;margin-bottom:.5em}
+    .ya-news__date{font-size:85%;margin-right:.5em}
+    .ya-news__informer{font-size:85%;margin-bottom:.3em}
+    .ya-news__description{font-size:85%;margin-bottom:.5em}
+    .ya-news__all{font-size:80%;margin-top:.3em}
+  </style>
+  <script src="//news.yandex.ru/ru/index5.utf8.js" charset="utf-8"></script>
+  <script>
+    (function(w,rubric){
+      var data=w[rubric];
+      if(!data||!data.length){return;}
+      function formatDate(ts){
+        var d=new Date(ts*1000);
+        return d.getHours()+':'+('0'+d.getMinutes()).substr(-2);
+      }
+      var item = data[0];
+      var html = '<div><span class="ya-news__date">'+item.date+'&nbsp;'+item.time+'</span><span class="ya-news__title"><a href="'+item.url+'" target="_blank">'+item.title+'</a></span></div><div class="ya-news__description">'+item.descr+'</div>';
+      document.write(html);
+    }(window, 'm_index'));
+  </script>
+<% end %>

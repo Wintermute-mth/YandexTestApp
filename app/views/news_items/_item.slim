@@ -1,0 +1,7 @@
+.news__container
+  span.news__date
+    = item.created_at.strftime('%d %b %y %h:%m')
+  span.news__title
+    = item.title
+  .news__description
+    =item.description

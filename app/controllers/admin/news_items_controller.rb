@@ -8,6 +8,16 @@ class Admin::NewsItemsController < ApplicationController
 
     if @item.save
       current_item.try(:destory)
+      ::NewsItemBroadcastJob.perform_later(@item)
+      redirect_to admin_path
+    else
+      render 'new'
+    end
+  end
+
+  def update
+    if current_item.update(permit_params)
+      ::NewsItemBroadcastJob.perform_later(current_item)
       redirect_to admin_path
     else
       render 'new'

@@ -7,8 +7,8 @@ class Admin::NewsItemsController < ApplicationController
     @item = NewsItem.new(permit_params)
 
     if @item.save
-      current_item.try(:destory)
       ::NewsItemBroadcastJob.perform_later(@item)
+      ::NewsItemBroadcastJob.set(wait: @item.expire_at - Time.now).perform_later
       redirect_to admin_path
     else
       render 'new'
@@ -16,8 +16,10 @@ class Admin::NewsItemsController < ApplicationController
   end
 
   def update
-    if current_item.update(permit_params)
+    @item = current_item
+    if @item.update(permit_params)
       ::NewsItemBroadcastJob.perform_later(current_item)
+      ::NewsItemBroadcastJob.set(wait: @item.expire_at - Time.now).perform_later
       redirect_to admin_path
     else
       render 'new'

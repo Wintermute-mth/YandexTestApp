@@ -6,9 +6,10 @@ class YandexNewsService
   end
 
   def perform
-    send_request
-    parse_response
-    generate_result
+    response = send_request
+    return {} if response.blank?
+    response = parse_response(response)
+    generate_result(response)
     @result
   end
 
@@ -24,16 +25,16 @@ class YandexNewsService
 
     request = Net::HTTP::Get.new(uri)
     res = http.request(request)
-    @response_body = res.body
+    res.body
   end
 
-  def parse_response
-    @response = JSON.parse(@response_body.force_encoding('UTF-8').match('\[.*\]').to_s).first
+  def parse_response(response)
+    JSON.parse(response.force_encoding('UTF-8').match('\[.*\]').to_s).first
   end
 
-  def generate_result
-    @result[:title] = @response['title']
-    @result[:description] = @response['descr']
-    @result[:created_at] = DateTime.strptime(@response["ts"], '%s').in_time_zone('Moscow')
+  def generate_result(response)
+    @result[:title] = response['title']
+    @result[:description] = response['descr']
+    @result[:created_at] = DateTime.strptime(response["ts"], '%s').in_time_zone('Moscow')
   end
 end

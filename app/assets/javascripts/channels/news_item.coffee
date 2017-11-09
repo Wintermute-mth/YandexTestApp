@@ -6,7 +6,9 @@ App.news_item = App.cable.subscriptions.create "NewsItemChannel",
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    document.getElementById("container").innerHTML = data.message
+    el = document.getElementById("container")
+    if el 
+      el.innerHTML = data.message
   
   change_item: (message) ->
     @perform 'change_item', message: message

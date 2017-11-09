@@ -1,6 +1,6 @@
 class Admin::NewsItemsController < ApplicationController
   def new
-    @item = current_item || NewsItem.new
+    @item = current_item || NewsItem.new(expire_at: Time.now)
   end
 
   def create
@@ -17,9 +17,11 @@ class Admin::NewsItemsController < ApplicationController
 
   def update
     @item = current_item
-    if @item.update(permit_params)
+    if @item && @item.update(permit_params)
       ::NewsItemBroadcastJob.perform_later(current_item)
       ::NewsItemBroadcastJob.set(wait: @item.expire_at - Time.now).perform_later
+      redirect_to admin_path
+    elsif !@item
       redirect_to admin_path
     else
       render 'new'

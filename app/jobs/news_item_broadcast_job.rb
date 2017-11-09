@@ -2,7 +2,11 @@ class NewsItemBroadcastJob < ApplicationJob
   queue_as :default
 
   def perform(item=nil)
-    news_item = item || YandexNewsItem.new
+    if item
+      news_item = item
+    else
+      news_item = YandexNewsItem.new
+    end
     ActionCable.server.broadcast 'news_item_channel', message: render_news_item(news_item)
   end
 

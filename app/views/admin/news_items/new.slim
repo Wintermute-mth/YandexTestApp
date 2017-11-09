@@ -3,6 +3,6 @@
   = f.inputs name: "Новость на главной" do
     = f.input :title
     = f.input :description
-    = f.input :expire_at
+    = f.input :expire_at, as: :datetime_picker
 
     = f.submit 'Сохранить'

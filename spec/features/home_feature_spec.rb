@@ -16,7 +16,7 @@ RSpec.describe 'HomeFeature' do
   describe "with NO news item", type: :feature do
     it do
       allow_any_instance_of(YandexNewsService).to receive(:perform).and_return(YANDEX_NEWS_HASH)
-      ya_news = YandexNewsItem.new
+      ya_news = YandexNewsItem.current
       visit root_path
 
       expect(page).to have_content ya_news.title

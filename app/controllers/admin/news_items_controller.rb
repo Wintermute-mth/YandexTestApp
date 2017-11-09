@@ -7,8 +7,7 @@ class Admin::NewsItemsController < ApplicationController
     @item = NewsItem.new(permit_params)
 
     if @item.save
-      ::NewsItemBroadcastJob.perform_later(@item)
-      ::NewsItemBroadcastJob.set(wait: @item.expire_at - Time.now).perform_later
+      item_news_job(@item)
       redirect_to admin_path
     else
       render 'new'
@@ -18,8 +17,7 @@ class Admin::NewsItemsController < ApplicationController
   def update
     @item = current_item
     if @item && @item.update(permit_params)
-      ::NewsItemBroadcastJob.perform_later(current_item)
-      ::NewsItemBroadcastJob.set(wait: @item.expire_at - Time.now).perform_later
+      item_news_job(@item)
       redirect_to admin_path
     elsif !@item
       redirect_to admin_path
@@ -31,7 +29,12 @@ class Admin::NewsItemsController < ApplicationController
   private
 
   def current_item
-    NewsItem.current_item
+    NewsItem.current
+  end
+
+  def item_news_job(item)
+    ::NewsItemBroadcastJob.perform_later(item)
+    ::NewsItemBroadcastJob.set(wait: item.expire_at - Time.now).perform_later
   end
 
   def permit_params

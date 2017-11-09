@@ -2,7 +2,7 @@ class NewsItem < ApplicationRecord
   validates :title, :description, :expire_at, presence: true
   validate :check_expire_at
 
-  def self.current_item
+  def self.current
     find_by("expire_at > ?", Time.current)
   end
 

@@ -2,6 +2,8 @@
 = semantic_form_for @item, url: url do |f| 
   = f.inputs name: "Новость на главной" do
     = f.input :title, input_html: { class: 'form-control' }
-    = f.input :description, input_html: { class: 'form-control' }
-    = f.input :expire_at, as: :datetime_picker, input_html: { class: 'form-control' }
+    = f.input :description, as: :text, input_html: { class: 'form-control', rows: 4 }
+    .row
+      .col-md-4
+        = f.input :expire_at, as: :datetime_picker, input_html: { class: 'form-control' }
     = f.action :submit, label: 'Сохранить', button_html: { class: 'btn btn-success' }
